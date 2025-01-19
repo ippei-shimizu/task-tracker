@@ -1,10 +1,12 @@
 "use client";
 
-import { useGoogleAuth } from "@/hooks/user-google-auth";
+import { auth, useGoogleAuth } from "@/hooks/user-google-auth";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 export default function SignInGoogleButton() {
+  const [user, isLoading] = useAuthState(auth);
   const router = useRouter();
   const { signInWithGoogle } = useGoogleAuth();
 
@@ -17,6 +19,10 @@ export default function SignInGoogleButton() {
       console.error(error);
     }
   }, [router, signInWithGoogle]);
+
+  if (isLoading || !user) {
+    return null;
+  }
 
   return (
     <button
