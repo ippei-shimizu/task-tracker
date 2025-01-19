@@ -9,6 +9,7 @@ export default {
   theme: {
     extend: {
       colors: {
+        black: "#121417",
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
