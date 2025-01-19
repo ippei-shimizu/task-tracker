@@ -1,22 +1,25 @@
-import { db } from "@/lib/firebase-config";
-import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { useCallback } from "react";
 
-type TaskResponseDTO = {
+type TaskRequestDTO = {
   name: string;
   deadline: string;
-  completed: boolean;
   userId: string;
 };
 
 export const useCreateTask = () => {
-  const createTask = useCallback(async (task: TaskResponseDTO): Promise<void> => {
-    await addDoc(collection(db, "tasks"), {
-      name: task.name,
-      deadline: Timestamp.fromDate(new Date(task.deadline)),
-      completed: task.completed,
-      userId: task.userId,
+  const createTask = useCallback(async (task: TaskRequestDTO): Promise<void> => {
+    const response = await fetch("/api/tasks", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(task),
     });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Failed to create task");
+    }
   }, []);
 
   return { createTask };

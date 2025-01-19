@@ -32,12 +32,15 @@ export default function CreateTaskForm() {
 
   const onSubmit = useCallback(
     async (data: FormData) => {
+      if (!user) {
+        toast.error("ログインしてください");
+        return;
+      }
       try {
         await createTask({
           name: data.taskName,
           deadline: data.deadline,
-          completed: false,
-          userId: user?.uid ?? "",
+          userId: user.uid,
         });
         toast.success("タスクを作成しました");
         router.push("/tasks");
