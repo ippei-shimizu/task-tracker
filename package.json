@@ -11,7 +11,10 @@
     "fix:lint": "next lint --fix"
   },
   "dependencies": {
+    "@types/js-cookie": "^3.0.6",
     "firebase": "^11.2.0",
+    "firebase-admin": "^13.0.2",
+    "js-cookie": "^3.0.5",
     "next": "15.1.5",
     "react": "18.2.0",
     "react-dom": "18.2.0",
