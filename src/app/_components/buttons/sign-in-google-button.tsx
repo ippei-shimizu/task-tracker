@@ -1,17 +1,22 @@
 "use client";
 
-import { signInWithGoogle } from "@/lib/auth";
+import { useGoogleAuth } from "@/hooks/user-google-auth";
+import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 
 export default function SignInGoogleButton() {
+  const router = useRouter();
+  const { signInWithGoogle } = useGoogleAuth();
+
   const handleGoogleSignIn = useCallback(async () => {
     try {
       const user = await signInWithGoogle();
       console.log("Google Login User", user);
+      router.push("/top");
     } catch (error) {
       console.error(error);
     }
-  }, []);
+  }, [router, signInWithGoogle]);
 
   return (
     <button
