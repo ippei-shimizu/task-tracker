@@ -4,6 +4,7 @@ import { auth, useGoogleAuth } from "@/hooks/user-google-auth";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { toast } from "react-toastify";
 
 export default function LoginButton() {
   const [user, isLoading] = useAuthState(auth);
@@ -14,8 +15,10 @@ export default function LoginButton() {
     try {
       await signInWithGoogle();
       router.push("/top");
+      toast.success("ログインしました");
     } catch (error) {
       console.error(error);
+      toast.error("ログインに失敗しました");
     }
   }, [router, signInWithGoogle]);
 
@@ -23,8 +26,10 @@ export default function LoginButton() {
     try {
       await signOutWithGoogle();
       router.push("/");
+      toast.success("ログアウトしました");
     } catch (error) {
       console.error(error);
+      toast.error("ログアウトに失敗しました");
     }
   }, [router, signOutWithGoogle]);
 
