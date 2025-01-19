@@ -20,16 +20,21 @@ export default function SignInGoogleButton() {
     }
   }, [router, signInWithGoogle]);
 
-  if (isLoading || !user) {
+  if (isLoading || user) {
     return null;
   }
 
   return (
-    <button
-      onClick={handleGoogleSignIn}
-      className="block text-black text-sm font-bold mx-auto w-[448px] py-2 bg-buttonBg rounded-[12px]"
-    >
-      Sign in with Google
-    </button>
+    <>
+      <h2 className="text-black text-2xl text-center font-bold">ログイン</h2>
+      <div className="mt-4">
+        <button
+          onClick={handleGoogleSignIn}
+          className="block text-black text-sm font-bold mx-auto w-[448px] py-2 bg-buttonBg rounded-[12px]"
+        >
+          Sign in with Google
+        </button>
+      </div>
+    </>
   );
 }
