@@ -1,10 +1,9 @@
 ---
 name: Enhancement issue template
 about: Enhancement
-title: ''
+title: ""
 labels: enhancement
 assignees: ippei-shimizu
-
 ---
 
 ## Goals
