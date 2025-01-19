@@ -12,7 +12,6 @@ export const useGoogleAuth = () => {
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
-      console.log(user);
       const accessToken = await user.getIdToken();
       Cookies.set(ACCESS_TOKEN, accessToken, { expires: 30, sameSite: "strict", httpOnly: false });
       return user;

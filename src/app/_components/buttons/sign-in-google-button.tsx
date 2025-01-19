@@ -12,8 +12,7 @@ export default function SignInGoogleButton() {
 
   const handleGoogleSignIn = useCallback(async () => {
     try {
-      const user = await signInWithGoogle();
-      console.log("Google Login User", user);
+      await signInWithGoogle();
       router.push("/top");
     } catch (error) {
       console.error(error);
