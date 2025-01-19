@@ -1,4 +1,5 @@
 ## ISSUE
+
 close #ISSUE_NUMBER
 
 ## 実装概要
