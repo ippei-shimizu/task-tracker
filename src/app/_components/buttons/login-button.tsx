@@ -14,7 +14,7 @@ export default function LoginButton() {
   const handleLogin = useCallback(async () => {
     try {
       await signInWithGoogle();
-      router.push("/top");
+      router.push("/tasks");
       toast.success("ログインしました");
     } catch (error) {
       console.error(error);
