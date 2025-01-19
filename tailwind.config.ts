@@ -10,6 +10,7 @@ export default {
     extend: {
       colors: {
         black: "#121417",
+        buttonBg: "#F0F2F5",
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
@@ -17,3 +18,4 @@ export default {
   },
   plugins: [],
 } satisfies Config;
+
