@@ -1,13 +1,39 @@
 "use client";
 
+import { useCompletedTask } from "@/hooks/api/use-completed-task";
 import { Task } from "@/types/task";
 import { formatDateToYYYYMMDD } from "@/utils/format-date";
+import { useState } from "react";
+import { toast } from "react-toastify";
 
 type TaskItemProps = {
   task: Task;
 };
 
 export default function TaskItem({ task }: TaskItemProps) {
+  const { completedTask } = useCompletedTask();
+  const [isCompleted, setIsCompleted] = useState(task.completed);
+  const [isHidden, setIsHidden] = useState(false);
+
+  const handleCompletedTask = async () => {
+    const newCompleted = !isCompleted;
+    setIsCompleted(newCompleted);
+    try {
+      await completedTask({ id: task.id, completed: !task.completed });
+      if (newCompleted) {
+        setIsHidden(true);
+      }
+    } catch (error) {
+      console.error("Error updating task:", error);
+      toast.error("タスクの更新に失敗しました。");
+      setIsCompleted(!newCompleted);
+    }
+  };
+
+  if (isHidden) {
+    return null;
+  }
+
   return (
     <div className="flex justify-between items-center">
       <div>
@@ -16,14 +42,9 @@ export default function TaskItem({ task }: TaskItemProps) {
       </div>
       <div>
         <label className="relative flex items-center cursor-pointer">
-          <input
-            type="checkbox"
-            onChange={() => console.log(task.completed)}
-            checked={task.completed}
-            className="sr-only peer"
-          />
+          <input type="checkbox" onChange={handleCompletedTask} checked={isCompleted} className="sr-only peer" />
           <div className="w-5 h-5 border-[2px] border-[#DBE0E5] rounded peer-checked:bg-blue-500 peer-checked:border-blue-500 transition-colors">
-            {task.completed && (
+            {isCompleted && (
               <svg
                 className="w-4 h-4 text-white absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
                 fill="none"
