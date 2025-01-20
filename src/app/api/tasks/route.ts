@@ -37,10 +37,17 @@ export async function POST(req: Request) {
   }
 }
 
-export async function GET() {
+export async function GET(req: Request) {
   try {
+    const authHeader = req.headers.get("Authorization");
+    if (!authHeader) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+
+    const userId = authHeader.replace("Bearer ", "");
+
     const tasks = db.collection("tasks");
-    const snapshot = await tasks.orderBy("deadline").get();
+    const snapshot = await tasks.where("userId", "==", userId).orderBy("deadline").get();
     const tasksList = snapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
