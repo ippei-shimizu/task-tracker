@@ -1,10 +1,14 @@
-import { applicationDefault, getApps, initializeApp } from "firebase-admin/app";
+import { cert, getApps, initializeApp } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
 import { NextResponse } from "next/server";
 
 if (!getApps().length) {
+  const serviceAccountKey = process.env.GOOGLE_APPLICATION_CREDENTIALS
+    ? JSON.parse(Buffer.from(process.env.GOOGLE_APPLICATION_CREDENTIALS, "base64").toString("utf-8"))
+    : null;
+
   initializeApp({
-    credential: applicationDefault(),
+    credential: cert(serviceAccountKey),
   });
 }
 
