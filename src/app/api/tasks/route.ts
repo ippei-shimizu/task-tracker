@@ -36,3 +36,20 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: "Failed to create task" }, { status: 500 });
   }
 }
+
+export async function GET() {
+  try {
+    const tasks = db.collection("tasks");
+    const snapshot = await tasks.orderBy("deadline").get();
+    const tasksList = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+      deadline: doc.data().deadline.toDate(),
+    }));
+
+    return NextResponse.json({ tasks: tasksList }, { status: 200 });
+  } catch (error) {
+    console.error("Error fetching tasks:", error);
+    return NextResponse.json({ message: "Failed to fetch tasks" }, { status: 500 });
+  }
+}
