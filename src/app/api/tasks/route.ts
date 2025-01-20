@@ -1,4 +1,3 @@
-export const maxDuration = 60;
 import { cert, getApps, initializeApp } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
 import { NextResponse } from "next/server";
@@ -35,5 +34,29 @@ export async function POST(req: Request) {
   } catch (error) {
     console.error("Error creating task:", error);
     return NextResponse.json({ message: "Failed to create task" }, { status: 500 });
+  }
+}
+
+export async function GET(req: Request) {
+  try {
+    const authHeader = req.headers.get("Authorization");
+    if (!authHeader) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+
+    const userId = authHeader.replace("Bearer ", "");
+
+    const tasks = db.collection("tasks");
+    const snapshot = await tasks.where("userId", "==", userId).orderBy("deadline").get();
+    const tasksList = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+      deadline: doc.data().deadline.toDate(),
+    }));
+
+    return NextResponse.json({ tasks: tasksList }, { status: 200 });
+  } catch (error) {
+    console.error("Error fetching tasks:", error);
+    return NextResponse.json({ message: "Failed to fetch tasks" }, { status: 500 });
   }
 }
