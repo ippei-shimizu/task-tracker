@@ -1,6 +1,6 @@
 "use client";
 
-import { auth, useGoogleAuth } from "@/hooks/user-google-auth";
+import { auth, useGoogleAuth } from "@/hooks/use-google-auth";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -14,7 +14,7 @@ export default function LoginButton() {
   const handleLogin = useCallback(async () => {
     try {
       await signInWithGoogle();
-      router.push("/top");
+      router.push("/tasks");
       toast.success("ログインしました");
     } catch (error) {
       console.error(error);

@@ -1,5 +1,5 @@
 import { ACCESS_TOKEN } from "@/constants";
-import app from "@/lib/firebase-config";
+import { app } from "@/lib/firebase-config";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import Cookies from "js-cookie";
 import { useCallback } from "react";
