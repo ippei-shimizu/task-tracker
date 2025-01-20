@@ -1,7 +1,8 @@
+import { SESSION } from "@/constants";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function middleware(request: NextRequest) {
-  const token = request.cookies.get("accessToken")?.value;
+  const token = request.cookies.get(SESSION)?.value;
   const pathname = request.nextUrl.pathname;
 
   if (pathname === "/") {
