@@ -1,5 +1,6 @@
-import { ACCESS_TOKEN, USER_ID } from "@/constants";
+import { USER_ID } from "@/constants";
 import { app } from "@/lib/firebase-config";
+import axios from "axios";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import Cookies from "js-cookie";
 import { useCallback } from "react";
@@ -13,8 +14,7 @@ export const useGoogleAuth = () => {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
       const accessToken = await user.getIdToken();
-      Cookies.set(ACCESS_TOKEN, accessToken, { expires: 30, sameSite: "strict", httpOnly: false });
-      Cookies.set(USER_ID, user.uid, { expires: 30, sameSite: "strict", httpOnly: false });
+      await axios.post("/api/auth/login", { accessToken, userId: user.uid });
       return user;
     } catch (error) {
       console.error(error);
@@ -25,7 +25,7 @@ export const useGoogleAuth = () => {
   const signOutWithGoogle = useCallback(async () => {
     try {
       await auth.signOut();
-      Cookies.remove(ACCESS_TOKEN);
+      await axios.post("/api/auth/logout");
       Cookies.remove(USER_ID);
     } catch (error) {
       console.error(error);
