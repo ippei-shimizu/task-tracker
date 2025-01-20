@@ -34,7 +34,11 @@ export async function GET(req: Request) {
     const userId = authHeader.replace("Bearer ", "");
 
     const tasks = adminFirestore.collection("tasks");
-    const snapshot = await tasks.where("userId", "==", userId).orderBy("deadline").get();
+    const snapshot = await tasks
+      .where("userId", "==", userId)
+      .where("completed", "==", false)
+      .orderBy("deadline")
+      .get();
     const tasksList = snapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
