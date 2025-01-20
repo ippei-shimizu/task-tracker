@@ -6,9 +6,7 @@ export default async function TaskLists() {
 
   return (
     <div className="grid gap-y-6">
-      {tasks.map((task) => (
-        <TaskItem key={task.id} task={task} />
-      ))}
+      {tasks.length === 0 ? <p>タスクがありません</p> : tasks.map((task) => <TaskItem key={task.id} task={task} />)}
     </div>
   );
 }
