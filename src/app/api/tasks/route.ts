@@ -1,18 +1,5 @@
-import { cert, getApps, initializeApp } from "firebase-admin/app";
-import { getFirestore } from "firebase-admin/firestore";
+import { adminFirestore } from "@/lib/firebase-admin";
 import { NextResponse } from "next/server";
-
-if (!getApps().length) {
-  const serviceAccountKey = process.env.GOOGLE_APPLICATION_CREDENTIALS
-    ? JSON.parse(Buffer.from(process.env.GOOGLE_APPLICATION_CREDENTIALS, "base64").toString("utf-8"))
-    : null;
-
-  initializeApp({
-    credential: cert(serviceAccountKey),
-  });
-}
-
-const db = getFirestore();
 
 export async function POST(req: Request) {
   try {
@@ -23,7 +10,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: "Invalid request payload" }, { status: 400 });
     }
 
-    await db.collection("tasks").add({
+    await adminFirestore.collection("tasks").add({
       name,
       deadline: new Date(deadline),
       completed: false,
@@ -46,7 +33,7 @@ export async function GET(req: Request) {
 
     const userId = authHeader.replace("Bearer ", "");
 
-    const tasks = db.collection("tasks");
+    const tasks = adminFirestore.collection("tasks");
     const snapshot = await tasks.where("userId", "==", userId).orderBy("deadline").get();
     const tasksList = snapshot.docs.map((doc) => ({
       id: doc.id,
