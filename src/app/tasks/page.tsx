@@ -1,5 +1,7 @@
+import Spinner from "@/app/_components/spinner";
 import TaskLists from "@/app/tasks/_components/task-lists";
 import Link from "next/link";
+import { Suspense } from "react";
 
 export default function Page() {
   return (
@@ -7,7 +9,15 @@ export default function Page() {
       <div className="w-11/12 max-w-[960px] mx-auto py-5 mb-20">
         <h2 className="text-black text-2xl font-bold">タスク一覧</h2>
         <div className="mt-8">
-          <TaskLists />
+          <Suspense
+            fallback={
+              <div className="flex justify-center items-center h-10">
+                <Spinner />
+              </div>
+            }
+          >
+            <TaskLists />
+          </Suspense>
         </div>
         <div>
           <Link
