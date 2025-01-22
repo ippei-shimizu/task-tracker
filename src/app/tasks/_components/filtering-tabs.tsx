@@ -1,6 +1,10 @@
 import Link from "next/link";
 
-export default function FilteringTabs({ filter }: { filter: string }) {
+type FilteringTabsProps = {
+  filter: string | undefined;
+};
+
+export default function FilteringTabs({ filter }: FilteringTabsProps) {
   return (
     <div className="flex gap-4 mb-4">
       <Link

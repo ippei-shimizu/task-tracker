@@ -3,7 +3,9 @@ import TaskLists from "@/app/tasks/_components/task-lists";
 import Link from "next/link";
 import { Suspense } from "react";
 
-export default function Page({ searchParams }: { searchParams: { filter?: string | undefined } }) {
+export default async function Page({ searchParams }: { searchParams: Promise<{ filter?: string }> }) {
+  const resolvedSearchParams = await searchParams;
+  const filter = resolvedSearchParams.filter || "all";
   return (
     <main>
       <div className="w-11/12 max-w-[960px] mx-auto py-5 mb-20">
@@ -16,7 +18,7 @@ export default function Page({ searchParams }: { searchParams: { filter?: string
               </div>
             }
           >
-            <TaskLists searchParams={searchParams} />
+            <TaskLists filter={filter} />
           </Suspense>
         </div>
         <div>

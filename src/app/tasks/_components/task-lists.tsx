@@ -2,9 +2,11 @@ import FilteringTabs from "@/app/tasks/_components/filtering-tabs";
 import TaskItem from "@/app/tasks/_components/task-item";
 import { getTasks } from "@/services/getTasks";
 
-export default async function TaskLists({ searchParams }: { searchParams: { filter?: string } }) {
-  const filter = searchParams.filter || "all";
+type TaskListsProps = {
+  filter: string;
+};
 
+export default async function TaskLists({ filter }: TaskListsProps) {
   const tasks = await getTasks(filter);
 
   return (
