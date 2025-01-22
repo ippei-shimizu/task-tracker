@@ -3,7 +3,7 @@ import TaskLists from "@/app/tasks/_components/task-lists";
 import Link from "next/link";
 import { Suspense } from "react";
 
-export default function Page({ searchParams }: { searchParams: { filter?: string } }) {
+export default function Page({ searchParams }: { searchParams: { filter?: string | undefined } }) {
   return (
     <main>
       <div className="w-11/12 max-w-[960px] mx-auto py-5 mb-20">
