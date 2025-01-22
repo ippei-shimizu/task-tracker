@@ -14,7 +14,7 @@ export default async function TaskLists({ filter, sort }: TaskListsProps) {
   return (
     <div className="grid gap-y-6">
       <div className="flex justify-between items-center mb-4">
-        <FilteringTabs filter={filter} />
+        <FilteringTabs filter={filter} sort={sort} />
         <SortButton filter={filter} sort={sort} />
       </div>
       {tasks.length === 0 ? <p>タスクがありません</p> : tasks.map((task) => <TaskItem key={task.id} task={task} />)}
