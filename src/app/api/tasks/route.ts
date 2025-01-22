@@ -1,4 +1,5 @@
 import { adminFirestore } from "@/lib/firebase-admin";
+import { OrderByDirection } from "firebase-admin/firestore";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
@@ -34,6 +35,7 @@ export async function GET(req: Request) {
     const userId = authHeader.replace("Bearer ", "");
     const url = new URL(req.url);
     const filter = url.searchParams.get("filter");
+    const sort = url.searchParams.get("sort") as OrderByDirection;
     const tasks = adminFirestore.collection("tasks").where("userId", "==", userId);
 
     let query = tasks;
@@ -42,7 +44,8 @@ export async function GET(req: Request) {
     } else if (filter === "incomplete") {
       query = query.where("completed", "==", false);
     }
-    const snapshot = await query.orderBy("deadline").get();
+
+    const snapshot = await query.orderBy("deadline", sort).get();
 
     const tasksList = snapshot.docs.map((doc) => ({
       id: doc.id,

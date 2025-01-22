@@ -3,8 +3,9 @@ import TaskLists from "@/app/tasks/_components/task-lists";
 import Link from "next/link";
 import { Suspense } from "react";
 
-export default async function Page({ searchParams }: { searchParams: Promise<{ filter?: string }> }) {
+export default async function Page({ searchParams }: { searchParams: Promise<{ filter?: string; sort?: string }> }) {
   const resolvedSearchParams = await searchParams;
+  const sort = resolvedSearchParams.sort || "asc";
   const filter = resolvedSearchParams.filter || "all";
   return (
     <main>
@@ -18,7 +19,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ f
               </div>
             }
           >
-            <TaskLists filter={filter} />
+            <TaskLists filter={filter} sort={sort} />
           </Suspense>
         </div>
         <div>
