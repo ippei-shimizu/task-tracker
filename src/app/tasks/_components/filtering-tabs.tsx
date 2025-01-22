@@ -6,7 +6,7 @@ type FilteringTabsProps = {
 
 export default function FilteringTabs({ filter }: FilteringTabsProps) {
   return (
-    <div className="flex gap-4 mb-4">
+    <div className="flex gap-4">
       <Link
         href="?filter=all"
         className={`text-sm px-4 py-1 rounded ${filter === "all" ? "bg-blue-500 text-white" : "bg-gray-200"}`}
