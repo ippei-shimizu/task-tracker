@@ -7,7 +7,7 @@ type TaskResponseDTO = {
   tasks: Task[];
 };
 
-export async function getTasks(): Promise<Task[]> {
+export async function getTasks(filter: string): Promise<Task[]> {
   const cookieStore = await cookies();
   const userId = cookieStore.get(USER_ID)?.value;
 
@@ -19,6 +19,7 @@ export async function getTasks(): Promise<Task[]> {
     headers: {
       Authorization: `Bearer ${userId}`,
     },
+    params: { filter },
   });
 
   if (response.status !== 200) {
