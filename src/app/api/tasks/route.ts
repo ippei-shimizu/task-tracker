@@ -32,13 +32,18 @@ export async function GET(req: Request) {
     }
 
     const userId = authHeader.replace("Bearer ", "");
+    const url = new URL(req.url);
+    const filter = url.searchParams.get("filter");
+    const tasks = adminFirestore.collection("tasks").where("userId", "==", userId);
 
-    const tasks = adminFirestore.collection("tasks");
-    const snapshot = await tasks
-      .where("userId", "==", userId)
-      .where("completed", "==", false)
-      .orderBy("deadline")
-      .get();
+    let query = tasks;
+    if (filter === "completed") {
+      query = query.where("completed", "==", true);
+    } else if (filter === "incomplete") {
+      query = query.where("completed", "==", false);
+    }
+    const snapshot = await query.orderBy("deadline").get();
+
     const tasksList = snapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
