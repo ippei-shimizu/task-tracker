@@ -12,7 +12,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    const updateFields: Partial<{ name: string; deadline: Timestamp; completed: boolean }> = {};
+    const updateFields: Partial<{ name: string; deadline: Timestamp; completed: boolean; isDeleted: boolean }> = {};
 
     const { name } = body;
     if (typeof name === "string") {
@@ -26,6 +26,11 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
 
     const { completed } = body;
     if (typeof completed !== "boolean") {
+      return NextResponse.json({ message: "Invalid request payload" }, { status: 400 });
+    }
+
+    const { isDeleted } = body;
+    if (typeof isDeleted !== "boolean") {
       return NextResponse.json({ message: "Invalid request payload" }, { status: 400 });
     }
 
@@ -51,6 +56,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
     await taskRef.update({
       ...updateFields,
       completed,
+      isDeleted,
     });
 
     return NextResponse.json({ message: "Task updated successfully" }, { status: 200 });

@@ -4,6 +4,7 @@ type TaskRequestDTO = {
   name: string;
   deadline: string;
   userId: string;
+  isDeleted?: boolean;
 };
 
 export const useCreateTask = () => {

@@ -5,9 +5,9 @@ import { NextResponse } from "next/server";
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { userId, name, deadline } = body;
+    const { userId, name, deadline, isDeleted } = body;
 
-    if (!userId || !name || !deadline) {
+    if (!userId || !name || !deadline || typeof isDeleted !== "boolean") {
       return NextResponse.json({ message: "Invalid request payload" }, { status: 400 });
     }
 
@@ -16,6 +16,7 @@ export async function POST(req: Request) {
       deadline: new Date(deadline),
       completed: false,
       userId,
+      isDeleted: isDeleted || false,
     });
 
     return NextResponse.json({ message: "Task created successfully" }, { status: 200 });
@@ -36,7 +37,7 @@ export async function GET(req: Request) {
     const url = new URL(req.url);
     const filter = url.searchParams.get("filter");
     const sort = url.searchParams.get("sort") as OrderByDirection;
-    const tasks = adminFirestore.collection("tasks").where("userId", "==", userId);
+    const tasks = adminFirestore.collection("tasks").where("userId", "==", userId).where("isDeleted", "==", false);
 
     let query = tasks;
     if (filter === "completed") {

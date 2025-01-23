@@ -4,4 +4,5 @@ export type Task = {
   deadline: Date;
   completed: boolean;
   userId: string;
+  isDeleted?: boolean,
 };

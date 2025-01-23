@@ -3,9 +3,10 @@ import { useCallback } from "react";
 
 type UpdateTaskDTO = {
   id: string;
-  name: string;
-  deadline: Date;
-  completed: boolean;
+  name?: string;
+  deadline?: Date;
+  completed?: boolean;
+  isDeleted?: boolean;
   userId: string;
 };
 

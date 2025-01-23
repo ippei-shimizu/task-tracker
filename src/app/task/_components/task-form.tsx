@@ -61,6 +61,7 @@ export default function TaskForm({ task }: TaskFormProps) {
             deadline: new Date(data.deadline),
             completed: task.completed,
             userId: user.uid,
+            isDeleted: task.isDeleted,
           });
           toast.success("タスクを更新しました");
           router.push("/tasks");
@@ -69,6 +70,7 @@ export default function TaskForm({ task }: TaskFormProps) {
             name: data.taskName,
             deadline: data.deadline,
             userId: user.uid,
+            isDeleted: false,
           });
           toast.success("タスクを作成しました");
           router.push("/tasks");
@@ -128,15 +130,43 @@ export default function TaskForm({ task }: TaskFormProps) {
             </button>
           </div>
         </form>
-        <div className="mt-10">
-          {task && (
-            <button
-              onClick={router.back}
-              className="bg-buttonBg rounded-xl w-[113px] h-10 text-sm text-black font-semibold hover:underline"
-            >
-              Back
-            </button>
-          )}
+        <div className="mt-4">
+          <div>
+            {task && (
+              <button
+                onClick={async () => {
+                  if (confirm("このタスクを削除しますか？")) {
+                    try {
+                      await updateTask({
+                        id: task.id,
+                        isDeleted: true,
+                        userId: task.userId,
+                        completed: task.completed,
+                      });
+                      toast.success("タスクを削除しました");
+                      router.push("/tasks");
+                    } catch (error) {
+                      console.error(error);
+                      toast.error("タスクの削除に失敗しました");
+                    }
+                  }
+                }}
+                className="bg-red-500 text-white text-sm font-semibold h-10 rounded-xl px-4 hover:bg-red-600"
+              >
+                削除
+              </button>
+            )}
+          </div>
+          <div className="mt-10">
+            {task && (
+              <button
+                onClick={router.back}
+                className="bg-buttonBg rounded-xl w-[113px] h-10 text-sm text-black font-semibold hover:underline"
+              >
+                Back
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </div>
