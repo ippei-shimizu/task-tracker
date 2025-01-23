@@ -62,14 +62,21 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
 
 export async function GET(req: Request) {
   try {
+    console.log("Request Headers:", req.headers);
+    console.log("Request URL:", req.url);
+
     const authHeader = req.headers.get("Authorization");
+    console.log("Authorization Header:", authHeader);
+
     if (!authHeader) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
     const userId = authHeader.replace("Bearer ", "");
+    console.log("User ID:", userId);
     const url = new URL(req.url);
     const id = url.searchParams.get("id");
+    console.log("Task ID:", id);
 
     if (!id) {
       return NextResponse.json({ message: "Task ID is required" }, { status: 400 });
