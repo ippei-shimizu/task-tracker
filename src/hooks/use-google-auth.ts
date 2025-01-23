@@ -1,5 +1,6 @@
 import { USER_ID } from "@/constants";
 import { app } from "@/lib/firebase-config";
+import { useAuthStore } from "@/stores/use-auth-store";
 import axios from "axios";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import Cookies from "js-cookie";
@@ -9,8 +10,10 @@ export const auth = getAuth(app);
 export const provider = new GoogleAuthProvider();
 
 export const useGoogleAuth = () => {
+  const { setLoading } = useAuthStore();
   const signInWithGoogle = useCallback(async () => {
     try {
+      setLoading(true);
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
       const accessToken = await user.getIdToken();
@@ -18,9 +21,10 @@ export const useGoogleAuth = () => {
       return user;
     } catch (error) {
       console.error(error);
+      setLoading(false);
       throw error;
     }
-  }, []);
+  }, [setLoading]);
 
   const signOutWithGoogle = useCallback(async () => {
     try {
