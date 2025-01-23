@@ -16,6 +16,7 @@ export default function SignInGoogleButton() {
     try {
       await signInWithGoogle();
       router.push("/tasks");
+      router.refresh();
       toast.success("ログインしました");
     } catch (error) {
       console.error(error);
