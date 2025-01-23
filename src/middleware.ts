@@ -1,16 +1,21 @@
+import { SESSION } from "@/constants";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function middleware(request: NextRequest) {
-  // const token = request.cookies.get(SESSION)?.value;
+  const token = request.cookies.get(SESSION)?.value;
   const pathname = request.nextUrl.pathname;
 
   if (pathname === "/" || pathname.startsWith("/api/auth/login")) {
     return NextResponse.next();
   }
 
-  // if (!token) {
-  //   return NextResponse.redirect(new URL("/", request.url));
-  // }
+  if (pathname === "/tasks" && request.headers.get("x-google-auth")) {
+    return NextResponse.next();
+  }
+
+  if (!token) {
+    return NextResponse.redirect(new URL("/", request.url));
+  }
 
   return NextResponse.next();
 }
