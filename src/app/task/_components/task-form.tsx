@@ -130,7 +130,7 @@ export default function TaskForm({ task }: TaskFormProps) {
             </button>
           </div>
         </form>
-        <div className="mt-4">
+        <div className="mt-6">
           <div>
             {task && (
               <button
@@ -153,7 +153,7 @@ export default function TaskForm({ task }: TaskFormProps) {
                 }}
                 className="bg-red-500 text-white text-sm font-semibold h-10 rounded-xl px-4 hover:bg-red-600"
               >
-                削除
+                Delete task
               </button>
             )}
           </div>
