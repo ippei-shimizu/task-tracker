@@ -1,6 +1,7 @@
 "use client";
 
 import { auth, useGoogleAuth } from "@/hooks/use-google-auth";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -22,21 +23,32 @@ export default function SignInGoogleButton() {
     }
   }, [signInWithGoogle, router]);
 
-  if (isLoading || user) {
+  if (isLoading) {
     return null;
   }
 
   return (
     <>
-      <h2 className="text-black text-2xl text-center font-bold">ログイン</h2>
-      <div className="mt-4">
-        <button
-          onClick={handleGoogleSignIn}
-          className="block text-black text-sm font-bold mx-auto w-[448px] py-2 bg-buttonBg rounded-[12px]"
+      {user ? (
+        <Link
+          href="/tasks"
+          className="block text-black text-sm font-bold mx-auto w-fit py-2 px-4 bg-buttonBg rounded-[12px] text-center"
         >
-          Sign in with Google
-        </button>
-      </div>
+          タスク一覧へ
+        </Link>
+      ) : (
+        <>
+          <h2 className="text-black text-2xl text-center font-bold">ログイン</h2>
+          <div className="mt-4">
+            <button
+              onClick={handleGoogleSignIn}
+              className="block text-black text-sm font-bold mx-auto w-[448px] py-2 bg-buttonBg rounded-[12px]"
+            >
+              Sign in with Google
+            </button>
+          </div>
+        </>
+      )}
     </>
   );
 }
