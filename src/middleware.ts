@@ -5,11 +5,7 @@ export async function middleware(request: NextRequest) {
   const token = request.cookies.get(SESSION)?.value;
   const pathname = request.nextUrl.pathname;
 
-  if (token && pathname === "/") {
-    return NextResponse.redirect(new URL("/tasks", request.url));
-  }
-
-  if (pathname === "/" || pathname.startsWith("/api/auth/login")) {
+  if (pathname === "/" || pathname.startsWith("/api/auth/login") || pathname.startsWith("/api/auth/logout")) {
     return NextResponse.next();
   }
 
