@@ -70,7 +70,6 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
     }
 
     const userId = authHeader.replace("Bearer ", "");
-    console.log("Task ID:", id);
 
     if (!id) {
       return NextResponse.json({ message: "Task ID is required" }, { status: 400 });
