@@ -13,6 +13,7 @@ export default function LoginButton() {
     try {
       await signInWithGoogle();
       router.push("/tasks");
+      router.refresh();
       toast.success("ログインしました");
     } catch (error) {
       console.error(error);
@@ -24,6 +25,7 @@ export default function LoginButton() {
     try {
       await signOutWithGoogle();
       router.push("/");
+      router.refresh();
       toast.success("ログアウトしました");
     } catch (error) {
       console.error(error);
