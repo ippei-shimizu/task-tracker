@@ -2,9 +2,6 @@ import { SESSION } from "@/constants";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function middleware(request: NextRequest) {
-  console.log("===== MIDDLEWARE DEBUG LOG =====");
-  console.log("HEADER COOKIE:", request.headers.get("cookie") || "(none)");
-  console.log("SESSION FROM COOKIES:", request.cookies.get(SESSION)?.value || "(none)");
   const token = request.cookies.get(SESSION)?.value;
   const { pathname, searchParams } = request.nextUrl;
 
@@ -16,6 +13,9 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  if (token && pathname === "/") {
+    return NextResponse.redirect(new URL("/tasks", request.url));
+  }
 
   if (!token) {
     return NextResponse.redirect(new URL("/", request.url));
