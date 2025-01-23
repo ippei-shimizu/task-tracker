@@ -1,7 +1,6 @@
 "use client";
 
 import { auth, useGoogleAuth } from "@/hooks/use-google-auth";
-import { useAuthStore } from "@/stores/use-auth-store";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -11,24 +10,17 @@ export default function SignInGoogleButton() {
   const [user, isLoading] = useAuthState(auth);
   const { signInWithGoogle } = useGoogleAuth();
   const router = useRouter();
-  const { setLoading } = useAuthStore();
 
   const handleGoogleSignIn = useCallback(async () => {
     try {
-      setLoading(true);
       await signInWithGoogle();
-      setTimeout(() => {
-        router.push("/tasks");
-        toast.success("ログインしました");
-      }, 6000);
+      router.push("/tasks");
+      toast.success("ログインしました");
     } catch (error) {
       console.error(error);
-      setLoading(false);
       toast.error("ログインに失敗しました");
-    } finally {
-      setLoading(false);
     }
-  }, [signInWithGoogle, router, setLoading]);
+  }, [signInWithGoogle, router]);
 
   if (isLoading || user) {
     return null;
