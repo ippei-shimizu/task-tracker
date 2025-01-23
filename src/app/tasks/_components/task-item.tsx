@@ -14,7 +14,6 @@ type TaskItemProps = {
 export default function TaskItem({ task }: TaskItemProps) {
   const { completedTask } = useCompletedTask();
   const [isCompleted, setIsCompleted] = useState(task.completed);
-  const [isHidden, setIsHidden] = useState(false);
 
   const handleCompletedTask = async () => {
     const newCompleted = !isCompleted;
@@ -22,7 +21,6 @@ export default function TaskItem({ task }: TaskItemProps) {
     try {
       await completedTask({ id: task.id, completed: !task.completed, userId: task.userId });
       if (newCompleted) {
-        setIsHidden(true);
       }
     } catch (error) {
       console.error("Error updating task:", error);
@@ -30,10 +28,6 @@ export default function TaskItem({ task }: TaskItemProps) {
       setIsCompleted(!newCompleted);
     }
   };
-
-  if (isHidden) {
-    return null;
-  }
 
   return (
     <div className="flex justify-between items-center">
