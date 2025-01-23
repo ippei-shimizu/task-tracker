@@ -1,5 +1,3 @@
-"use client";
-
 import { auth, useGoogleAuth } from "@/hooks/use-google-auth";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
