@@ -6,7 +6,11 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { accessToken, userId } = body;
 
-    const response = NextResponse.json({ message: "Login successful" });
+    const { url } = req;
+    const baseUrl = new URL(url);
+    const tasksUrl = new URL("/tasks", baseUrl);
+
+    const response = NextResponse.redirect(tasksUrl, 302);
 
     response.cookies.set(SESSION, accessToken, {
       httpOnly: true,
