@@ -3,7 +3,11 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function middleware(request: NextRequest) {
   const token = request.cookies.get(SESSION)?.value;
-  const pathname = request.nextUrl.pathname;
+  const { pathname, searchParams } = request.nextUrl;
+
+  if (searchParams.has("_rsc")) {
+    return NextResponse.next();
+  }
 
   if (pathname === "/" || pathname.startsWith("/api/auth/login")) {
     return NextResponse.next();
