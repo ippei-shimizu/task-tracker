@@ -19,9 +19,7 @@ export default function TaskItem({ task }: TaskItemProps) {
     const newCompleted = !isCompleted;
     setIsCompleted(newCompleted);
     try {
-      await completedTask({ id: task.id, completed: !task.completed, userId: task.userId });
-      if (newCompleted) {
-      }
+      await completedTask({ id: task.id, completed: !task.completed, userId: task.userId, isDeleted: task.isDeleted });
     } catch (error) {
       console.error("Error updating task:", error);
       toast.error("タスクの更新に失敗しました。");

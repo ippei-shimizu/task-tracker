@@ -5,6 +5,7 @@ type CompletedTaskDTO = {
   id: string;
   completed: boolean;
   userId: string;
+  isDeleted?: boolean;
 };
 
 export const useCompletedTask = () => {
@@ -13,6 +14,7 @@ export const useCompletedTask = () => {
       `/api/tasks/${task.id}`,
       {
         completed: task.completed,
+        isDeleted: task.isDeleted,
       },
       {
         headers: {
