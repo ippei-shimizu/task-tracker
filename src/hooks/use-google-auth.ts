@@ -4,7 +4,6 @@ import axios from "axios";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
-
 import { useCallback } from "react";
 
 export const auth = getAuth(app);
@@ -17,8 +16,10 @@ export const useGoogleAuth = () => {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
       const accessToken = await user.getIdToken();
-      await axios.post("/api/auth/login", { accessToken, userId: user.uid });
-      router.push("/tasks");
+      const response = await axios.post("/api/auth/login", { accessToken, userId: user.uid });
+      if (response.status === 200) {
+        router.push("/tasks");
+      }
       return user;
     } catch (error) {
       console.error(error);
