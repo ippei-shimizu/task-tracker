@@ -6,15 +6,11 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { accessToken, userId } = body;
 
-    const { url } = req;
-    const baseUrl = new URL(url);
-    const tasksUrl = new URL("/tasks", baseUrl);
-
-    const response = NextResponse.redirect(tasksUrl, 302);
+    const response = NextResponse.json({ message: "Login successful" });
 
     response.cookies.set(SESSION, accessToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: false,
       sameSite: "strict",
       maxAge: 60 * 60 * 24 * 7,
     });
