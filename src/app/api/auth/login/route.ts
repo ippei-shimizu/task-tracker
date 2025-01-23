@@ -15,14 +15,14 @@ export async function POST(req: Request) {
     response.cookies.set(SESSION, accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      sameSite: "none",
       maxAge: 60 * 60 * 24 * 7,
     });
 
     response.cookies.set(USER_ID, userId, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      sameSite: "none",
       maxAge: 60 * 60 * 24 * 7,
     });
 
