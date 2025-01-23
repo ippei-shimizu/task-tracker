@@ -18,7 +18,17 @@ export const useGoogleAuth = () => {
       const accessToken = await user.getIdToken();
       const response = await axios.post("/api/auth/login", { accessToken, userId: user.uid });
       if (response.status === 200) {
-        router.push("/tasks");
+        const checkSessionCookie = () => Cookies.get("SESSION");
+        const maxRetries = 10;
+        let retries = 0;
+
+        while (!checkSessionCookie() && retries < maxRetries) {
+          await new Promise((resolve) => setTimeout(resolve, 200));
+          retries++;
+        }
+        if (checkSessionCookie()) {
+          router.push("/tasks");
+        }
       }
       return user;
     } catch (error) {
